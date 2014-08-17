@@ -4,7 +4,7 @@
 "   - ingo/buffer/visible.vim autoload script
 "   - ingo/msg.vim autoload script
 "
-" Copyright: (C) 2011-2013 Ingo Karkat
+" Copyright: (C) 2011-2014 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -28,7 +28,7 @@ function! s:AutoSaveTrigger()
 	    " Special case: the default Vim error is misleading; the user cannot
 	    " simply add ! here.
 	    call add(l:errors, bufname(l:bufnr + 0) . ': file is readonly')
-	catch /^Vim\%((\a\+)\)\=:E/
+	catch /^Vim\%((\a\+)\)\=:/
 	    call add(l:errors, bufname(l:bufnr + 0) . ': ' . ingo#msg#MsgFromVimException())
 	endtry
     endfor
