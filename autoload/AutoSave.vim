@@ -24,7 +24,7 @@ function! s:AutoSaveTrigger()
 	" Dictionary, but we need an Integer.
 	try
 	    call ingo#buffer#visible#Execute(l:bufnr + 0, 'update')
-	catch /^Vim\%((\a\+)\)\=:E45/	" E45: 'readonly' option is set
+	catch /^Vim\%((\a\+)\)\=:E45:/	" E45: 'readonly' option is set
 	    " Special case: the default Vim error is misleading; the user cannot
 	    " simply add ! here.
 	    call add(l:errors, bufname(l:bufnr + 0) . ': file is readonly')
