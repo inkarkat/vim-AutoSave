@@ -1,0 +1,85 @@
+*AutoSave.txt*          Automatically persist a buffer frequently.
+
+			 AUTO SAVE    by Ingo Karkat
+								*AutoSave.vim*
+description			|AutoSave-description|
+usage				|AutoSave-usage|
+installation			|AutoSave-installation|
+limitations			|AutoSave-limitations|
+known problems			|AutoSave-known-problems|
+todo				|AutoSave-todo|
+history				|AutoSave-history|
+
+==============================================================================
+DESCRIPTION						*AutoSave-description*
+
+When developing scripts or programs, one frequently switches between a short
+edit in Vim and a test or compiler run in a terminal. If one forgets to
+persist the changes in Vim (|:w|), that run is of no avail, and one has to
+switch back to Vim, save, and repeat.
+
+This plugin allows to designate certain buffers for automatic persistence when
+GVIM (and Vim in terminals that support the |FocusLost| event) lose focus, or
+optionally also when 'updatetime' passes without a keypress in Vim. With that,
+you can just make your edits, switch to another application, and the changes
+will have been saved to the file, regardless of whether that file was
+currently active inside Vim.
+
+RELATED WORKS								     *
+
+- The |todo.txt| has an entry for an 'autosave' option, which would persist a
+  buffer shortly after the last change.
+- vim-auto-save (vimscript #4521) automatically persists _all_ (toggled with
+  :AutoSaveToggle) buffers on CursorHold events (and reduces 'updatetime' to
+  200 ms).
+
+==============================================================================
+USAGE							      *AutoSave-usage*
+						     *:AutoSave* *:NoAutoSave*
+:AutoSave[!], :NoAutoSave
+			Turn on / off automatic saving of the current buffer
+			whenever Vim loses focus (in the GUI) or exits; with !
+			also on |CursorHold|.
+
+==============================================================================
+INSTALLATION					       *AutoSave-installation*
+
+This script is packaged as a |vimball|. If you have the "gunzip" decompressor
+in your PATH, simply edit the *.vmb.gz package in Vim; otherwise, decompress
+the archive first, e.g. using WinZip. Inside Vim, install by sourcing the
+vimball or via the |:UseVimball| command. >
+    vim AutoSave*.vmb.gz
+    :so %
+To uninstall, use the |:RmVimball| command.
+
+DEPENDENCIES					       *AutoSave-dependencies*
+
+- Requires Vim 7.0 or higher.
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.016 or
+  higher.
+
+==============================================================================
+LIMITATIONS						*AutoSave-limitations*
+
+KNOWN PROBLEMS					     *AutoSave-known-problems*
+
+TODO							       *AutoSave-todo*
+
+IDEAS							      *AutoSave-ideas*
+
+==============================================================================
+HISTORY							    *AutoSave-history*
+
+GOAL
+First published version.
+
+0.01	12-Apr-2011
+Started development.
+
+==============================================================================
+Copyright: (C) 2011-2013 Ingo Karkat
+The VIM LICENSE applies to this plugin; see |copyright|.
+
+Maintainer:	Ingo Karkat <ingo@karkat.de>
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:
