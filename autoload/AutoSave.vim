@@ -4,12 +4,15 @@
 "   - ingo/buffer/visible.vim autoload script
 "   - ingo/msg.vim autoload script
 "
-" Copyright: (C) 2011-2014 Ingo Karkat
+" Copyright: (C) 2011-2015 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	02-Feb-2015	Make autocmds nested in order to execute any
+"				BufWrite triggers, too. Found suggestion at
+"				http://stackoverflow.com/questions/28040188/vim-how-to-autosave-and-get-autocmds-to-run
 "	001	18-Dec-2013	file creation from ingocommands.vim.
 "	000	12-Apr-2011	Initial implementation.
 
@@ -58,9 +61,9 @@ function! AutoSave#AutoSave( isEnable, isMoreAggressive )
 	" Install autocmd on first added buffer.
 	augroup AutoSave
 	    autocmd!
-	    autocmd FocusLost,VimLeavePre * call <SID>AutoSaveTrigger()
+	    autocmd FocusLost,VimLeavePre * nested call <SID>AutoSaveTrigger()
 	    if a:isMoreAggressive
-		autocmd CursorHold,CursorHoldI * call <SID>AutoSaveTrigger()
+		autocmd CursorHold,CursorHoldI * nested call <SID>AutoSaveTrigger()
 	    endif
 	augroup END
     elseif ! a:isEnable && len(s:autoSavedBuffers) == 0
