@@ -11,7 +11,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 
 let s:autoSavedBuffers = {}
-function! s:AutoSaveTrigger()
+function! s:AutoSaveTrigger( isAggressive )
     " Must collect all errors because of the single v:errmsg and previous
     " :echomsg outputs may not be visible any more.
     let l:errors = []
@@ -19,14 +19,20 @@ function! s:AutoSaveTrigger()
     for l:bufnr in keys(s:autoSavedBuffers)
 	" Attention! l:bufnr is a String when we retrieve it from the
 	" Dictionary, but we need an Integer.
+	let l:bufnr = l:bufnr + 0
+
+	if a:isAggressive && ! getbufvar(l:bufnr, 'AutoSave_Aggressive', 0)
+	    continue    " Skip non-aggressive buffers during aggressive event handling.
+	endif
+
 	try
-	    call ingo#buffer#visible#Execute(l:bufnr + 0, ingo#list#JoinNonEmpty([g:AutoSave_UpdateModifiers, getbufvar(l:bufnr + 0, 'AutoSave_UpdateModifiers'), 'update']))
+	    call ingo#buffer#visible#Execute(l:bufnr, ingo#list#JoinNonEmpty([g:AutoSave_UpdateModifiers, getbufvar(l:bufnr, 'AutoSave_UpdateModifiers'), 'update']))
 	catch /^Vim\%((\a\+)\)\=:E45:/	" E45: 'readonly' option is set
 	    " Special case: the default Vim error is misleading; the user cannot
 	    " simply add ! here.
-	    call add(l:errors, bufname(l:bufnr + 0) . ': file is readonly')
+	    call add(l:errors, bufname(l:bufnr) . ': file is readonly')
 	catch /^Vim\%((\a\+)\)\=:/
-	    call add(l:errors, bufname(l:bufnr + 0) . ': ' . ingo#msg#MsgFromVimException())
+	    call add(l:errors, bufname(l:bufnr) . ': ' . ingo#msg#MsgFromVimException())
 	endtry
     endfor
 
@@ -53,19 +59,23 @@ function! AutoSave#AutoSave( isEnable, isMoreAggressive )
 	else
 	    unlet! b:AutoSave_UpdateModifiers
 	endif
+
+	let b:AutoSave_Aggressive = a:isMoreAggressive
     else
 	unlet! b:autosave
 	unlet! b:AutoSave_UpdateModifiers
+	unlet! b:AutoSave_Aggressive
 	silent! unlet s:autoSavedBuffers[bufnr('')]
     endif
 
-    if a:isEnable && len(s:autoSavedBuffers) == 1
-	" Install autocmd on first added buffer.
+    if a:isEnable && (len(s:autoSavedBuffers) == 1 || a:isMoreAggressive && ! exists('#AutoSave#CursorHold'))
+	" Install autocmd on first added buffer or when aggressive autocmds
+	" don't exist yet.
 	augroup AutoSave
 	    autocmd!
-	    autocmd FocusLost,VimLeavePre * nested call <SID>AutoSaveTrigger()
+	    autocmd FocusLost,VimLeavePre * nested call <SID>AutoSaveTrigger(0)
 	    if a:isMoreAggressive
-		autocmd CursorHold,CursorHoldI * nested call <SID>AutoSaveTrigger()
+		autocmd CursorHold,CursorHoldI * nested call <SID>AutoSaveTrigger(1)
 	    endif
 	augroup END
     elseif ! a:isEnable && len(s:autoSavedBuffers) == 0

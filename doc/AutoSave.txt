@@ -102,6 +102,8 @@ HISTORY							    *AutoSave-history*
 - ENH: Allow customization of :update command via :noautocmd AutoSave, or
   g:AutoSave_UpdateModifiers configuration.
   *** You need to update to ingo-library (vimscript #4433) version 1.033! ***
+- ENH: Record use of [!] for each buffer, and only update those with
+  :AutoSave! during CursorHold[I] events.
 
 1.00	13-Nov-2017
 First published version.

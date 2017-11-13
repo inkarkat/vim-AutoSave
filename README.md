@@ -32,6 +32,12 @@ USAGE
                             Turn on / off automatic saving of the current buffer
                             whenever Vim loses focus (in the GUI) or exits; with !
                             also on CursorHold.
+                            Note: The saving may trigger |:autocmd|s, and these
+                            may (depending on your configuration) trigger dialogs,
+                            or run external commands. If you do not want that,
+                            either use :noautocmd AutoSave (to disable this for
+                            the current buffer only), or globally by adding that
+                            to the g:AutoSave_UpdateModifiers configuration.
 
 INSTALLATION
 ------------------------------------------------------------------------------
@@ -55,8 +61,19 @@ To uninstall, use the :RmVimball command.
 ### DEPENDENCIES
 
 - Requires Vim 7.0 or higher.
-- Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.016 or
+- Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.033 or
   higher.
+
+CONFIGURATION
+------------------------------------------------------------------------------
+
+For a permanent configuration, put the following commands into your vimrc:
+
+The contents of this configuration are prepended to the :update command; you
+can use noautocmd to suppress triggering |autocmd|s, or silent to suppress
+the save messages:
+
+    let g:AutoSave_UpdateModifiers = ''
 
 CONTRIBUTING
 ------------------------------------------------------------------------------
@@ -66,6 +83,13 @@ https://github.com/inkarkat/vim-AutoSave/issues or email (address below).
 
 HISTORY
 ------------------------------------------------------------------------------
+
+##### 1.10    RELEASEME
+- ENH: Allow customization of :update command via :noautocmd AutoSave, or
+  g:AutoSave\_UpdateModifiers configuration.
+  __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.033!__
+- ENH: Record use of [!] for each buffer, and only update those with
+  :AutoSave! during CursorHold[I] events.
 
 ##### 1.00    13-Nov-2017
 - First published version.
