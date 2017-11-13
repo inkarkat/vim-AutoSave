@@ -1,0 +1,3 @@
+autoload/AutoSave.vim
+plugin/AutoSave.vim
+doc/AutoSave.txt
