@@ -4,17 +4,10 @@
 "   - ingo/buffer/visible.vim autoload script
 "   - ingo/msg.vim autoload script
 "
-" Copyright: (C) 2011-2015 Ingo Karkat
+" Copyright: (C) 2011-2017 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	002	02-Feb-2015	Make autocmds nested in order to execute any
-"				BufWrite triggers, too. Found suggestion at
-"				http://stackoverflow.com/questions/28040188/vim-how-to-autosave-and-get-autocmds-to-run
-"	001	18-Dec-2013	file creation from ingocommands.vim.
-"	000	12-Apr-2011	Initial implementation.
 
 let s:autoSavedBuffers = {}
 function! s:AutoSaveTrigger()
