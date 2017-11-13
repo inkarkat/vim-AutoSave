@@ -14,6 +14,16 @@ if exists('g:loaded_AutoSave') || (v:version < 700)
 endif
 let g:loaded_AutoSave = 1
 
+"- configuration ---------------------------------------------------------------
+
+if ! exists('g:AutoSave_UpdateModifiers')
+    let g:AutoSave_UpdateModifiers = ''
+endif
+
+
+
+"- commands --------------------------------------------------------------------
+
 command! -bar -bang AutoSave   call AutoSave#AutoSave(1, <bang>0)
 command! -bar       NoAutoSave call AutoSave#AutoSave(0, 0)
 

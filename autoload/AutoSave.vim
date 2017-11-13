@@ -2,6 +2,7 @@
 "
 " DEPENDENCIES:
 "   - ingo/buffer/visible.vim autoload script
+"   - ingo/list.vim autoload script
 "   - ingo/msg.vim autoload script
 "
 " Copyright: (C) 2011-2017 Ingo Karkat
@@ -19,7 +20,7 @@ function! s:AutoSaveTrigger()
 	" Attention! l:bufnr is a String when we retrieve it from the
 	" Dictionary, but we need an Integer.
 	try
-	    call ingo#buffer#visible#Execute(l:bufnr + 0, 'update')
+	    call ingo#buffer#visible#Execute(l:bufnr + 0, ingo#list#JoinNonEmpty([g:AutoSave_UpdateModifiers, getbufvar(l:bufnr + 0, 'AutoSave_UpdateModifiers'), 'update']))
 	catch /^Vim\%((\a\+)\)\=:E45:/	" E45: 'readonly' option is set
 	    " Special case: the default Vim error is misleading; the user cannot
 	    " simply add ! here.
@@ -45,8 +46,16 @@ function! AutoSave#AutoSave( isEnable, isMoreAggressive )
     if a:isEnable
 	let b:autosave = 1 " Mark buffer to enable easy flagging in statusline.
 	let s:autoSavedBuffers[bufnr('')] = 1
+
+	" Memorize :noautocmd intention in a buffer-local flag.
+	if &eventignore ==# 'all'
+	    let b:AutoSave_UpdateModifiers = 'noautocmd'
+	else
+	    unlet! b:AutoSave_UpdateModifiers
+	endif
     else
 	unlet! b:autosave
+	unlet! b:AutoSave_UpdateModifiers
 	silent! unlet s:autoSavedBuffers[bufnr('')]
     endif
 
