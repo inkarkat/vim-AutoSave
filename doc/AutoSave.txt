@@ -33,6 +33,8 @@ RELATED WORKS								     *
 - vim-auto-save (vimscript #4521) automatically persists _all_ (toggled with
   :AutoSaveToggle) buffers on CursorHold events (and reduces 'updatetime' to
   200 ms).
+- vim-autosave (https://github.com/chrisbra/vim-autosave) uses Vim 8 timers to
+  persist a backup copy every 5 minutes.
 
 ==============================================================================
 USAGE							      *AutoSave-usage*
@@ -112,7 +114,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2011-2017 Ingo Karkat
+Copyright: (C) 2011-2018 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>
