@@ -1,9 +1,9 @@
 " AutoSave.vim: Automatically persist a buffer frequently.
 "
 " DEPENDENCIES:
-"   - AutoSave.vim autoload script
+"   - Requires Vim 7.0 or higher.
 "
-" Copyright: (C) 2011-2017 Ingo Karkat
+" Copyright: (C) 2011-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -13,6 +13,15 @@ if exists('g:loaded_AutoSave') || (v:version < 700)
     finish
 endif
 let g:loaded_AutoSave = 1
+
+"- configuration ---------------------------------------------------------------
+
+if ! exists('g:AutoSave_UpdateModifiers')
+    let g:AutoSave_UpdateModifiers = ''
+endif
+
+
+"- commands --------------------------------------------------------------------
 
 command! -bar -bang AutoSave   call AutoSave#AutoSave(1, <bang>0)
 command! -bar       NoAutoSave call AutoSave#AutoSave(0, 0)

@@ -5,6 +5,7 @@
 description			|AutoSave-description|
 usage				|AutoSave-usage|
 installation			|AutoSave-installation|
+configuration			|AutoSave-configuration|
 limitations			|AutoSave-limitations|
 known problems			|AutoSave-known-problems|
 todo				|AutoSave-todo|
@@ -32,6 +33,8 @@ RELATED WORKS								     *
 - vim-auto-save (vimscript #4521) automatically persists _all_ (toggled with
   :AutoSaveToggle) buffers on CursorHold events (and reduces 'updatetime' to
   200 ms).
+- vim-autosave (https://github.com/chrisbra/vim-autosave) uses Vim 8 timers to
+  persist a backup copy every 5 minutes.
 
 ==============================================================================
 USAGE							      *AutoSave-usage*
@@ -40,6 +43,12 @@ USAGE							      *AutoSave-usage*
 			Turn on / off automatic saving of the current buffer
 			whenever Vim loses focus (in the GUI) or exits; with !
 			also on |CursorHold|.
+			Note: The saving may trigger |:autocmd|s, and these
+			may (depending on your configuration) trigger dialogs,
+			or run external commands. If you do not want that,
+			either use |:noautocmd| AutoSave (to disable this for
+			the current buffer only), or globally by adding that
+			to the |g:AutoSave_UpdateModifiers| configuration.
 
 ==============================================================================
 INSTALLATION					       *AutoSave-installation*
@@ -61,9 +70,19 @@ To uninstall, use the |:RmVimball| command.
 DEPENDENCIES					       *AutoSave-dependencies*
 
 - Requires Vim 7.0 or higher.
-- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.016 or
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.033 or
   higher.
 
+==============================================================================
+CONFIGURATION					      *AutoSave-configuration*
+
+For a permanent configuration, put the following commands into your |vimrc|:
+						  *g:AutoSave_UpdateModifiers*
+The contents of this configuration are prepended to the |:update| command; you
+can use |noautocmd| to suppress triggering |autocmd|s, or |silent| to suppress
+the save messages: >
+    let g:AutoSave_UpdateModifiers = ''
+<
 ==============================================================================
 LIMITATIONS						*AutoSave-limitations*
 
@@ -81,6 +100,13 @@ https://github.com/inkarkat/vim-AutoSave/issues or email (address below).
 ==============================================================================
 HISTORY							    *AutoSave-history*
 
+1.10	09-Feb-2020
+- ENH: Allow customization of :update command via :noautocmd AutoSave, or
+  g:AutoSave_UpdateModifiers configuration.
+  *** You need to update to ingo-library (vimscript #4433) version 1.033! ***
+- ENH: Record use of [!] for each buffer, and only update those with
+  :AutoSave! during CursorHold[I] events.
+
 1.00	13-Nov-2017
 First published version.
 
@@ -88,7 +114,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2011-2017 Ingo Karkat
+Copyright: (C) 2011-2020 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>
