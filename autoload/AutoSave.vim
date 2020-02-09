@@ -1,17 +1,15 @@
 " AutoSave.vim: Automatically persist a buffer frequently.
 "
 " DEPENDENCIES:
-"   - ingo/buffer/visible.vim autoload script
-"   - ingo/list.vim autoload script
-"   - ingo/msg.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2011-2017 Ingo Karkat
+" Copyright: (C) 2011-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 
 let s:autoSavedBuffers = {}
-function! s:AutoSaveTrigger( isAggressive )
+function! s:AutoSaveTrigger( isAggressive ) abort
     " Must collect all errors because of the single v:errmsg and previous
     " :echomsg outputs may not be visible any more.
     let l:errors = []
@@ -42,7 +40,7 @@ function! s:AutoSaveTrigger( isAggressive )
 	call ingo#msg#ErrorMsg('Error saving buffer' . (len(l:errors) > 1 ? 's' : '') . ': ' . join(l:errors, '; '))
     endif
 endfunction
-function! AutoSave#AutoSave( isEnable, isMoreAggressive )
+function! AutoSave#AutoSave( isEnable, isMoreAggressive ) abort
     " Note: We cannot install individual buffer-scoped autocmds a la
     "	autocmd FocusLost <buffer> update
     " Only the autocmd for the buffer that is active when Vim loses focus is
